@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noruega · Julio 2026</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; background: #F5F3EE; color: #2C2C2A; line-height: 1.5; }
+.page { max-width: 980px; margin: 0 auto; padding: 52px 32px 64px; }
+
+/* Header */
+.header { text-align: center; margin-bottom: 44px; }
+.flag { font-size: 44px; margin-bottom: 14px; line-height: 1; }
+.eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; color: #B4B2A9; text-transform: uppercase; margin-bottom: 10px; }
+.title { font-size: 56px; font-weight: 800; color: #1A1A18; letter-spacing: -2px; margin-bottom: 6px; }
+.subtitle { font-size: 20px; color: #888780; margin-bottom: 28px; }
+.divider { display: flex; align-items: center; gap: 14px; justify-content: center; }
+.divider-line { height: 1px; width: 56px; background: #D3D1C7; }
+.divider-dot { width: 7px; height: 7px; border-radius: 50%; background: #1D9E75; }
+
+/* Summary */
+.summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 36px 0 48px; }
+.sum-card { background: white; border-radius: 14px; padding: 20px 12px; text-align: center; border: 1px solid #E8E5DF; }
+.sum-num { font-size: 32px; font-weight: 800; color: #1D9E75; letter-spacing: -1px; }
+.sum-label { font-size: 11px; color: #B4B2A9; margin-top: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; }
+
+/* Section label */
+.section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: #B4B2A9; text-transform: uppercase; margin-bottom: 14px; }
+
+/* Map */
+#map { height: 460px; border-radius: 16px; overflow: hidden; border: 1px solid #E0DDD6; box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+.map-legend { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 12px; font-size: 12px; color: #888780; align-items: center; }
+.leg-item { display: flex; align-items: center; gap: 7px; }
+
+/* Table */
+.section-label-table { font-size: 10px; font-weight: 700; letter-spacing: 0.15em; color: #B4B2A9; text-transform: uppercase; margin-bottom: 14px; margin-top: 44px; }
+.table-wrap { background: white; border-radius: 16px; border: 1px solid #E0DDD6; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+table { width: 100%; border-collapse: collapse; }
+thead th { background: #FAFAF8; padding: 13px 18px; text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: #B4B2A9; text-transform: uppercase; border-bottom: 1px solid #F0EDE6; }
+tbody tr { border-bottom: 1px solid #F5F3EE; vertical-align: top; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #FDFCFA; }
+td { padding: 14px 18px; }
+
+.date-d { font-weight: 700; font-size: 13px; }
+.date-dow { font-size: 11px; color: #B4B2A9; margin-top: 1px; }
+.place { font-weight: 700; font-size: 14px; color: #1A1A18; }
+.hotel-sub { font-size: 11px; color: #B4B2A9; margin-top: 3px; }
+
+.badge { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 10px; font-weight: 700; margin-top: 5px; letter-spacing: 0.05em; text-transform: uppercase; }
+.b-confirmed { background: #D7F5E9; color: #085041; }
+.b-pending   { background: #FEF3E2; color: #7A4500; }
+.b-warning   { background: #FCEBEB; color: #A32D2D; }
+
+.tr-time  { font-weight: 700; font-size: 13px; }
+.tr-route { font-size: 11px; color: #B4B2A9; margin-top: 2px; }
+.no-tr    { color: #D3D1C7; font-size: 20px; }
+
+.acts { list-style: none; }
+.acts li { font-size: 12px; color: #5F5E5A; padding: 2px 0; display: flex; gap: 7px; align-items: flex-start; }
+.acts li::before { content: "→"; color: #1D9E75; font-size: 10px; flex-shrink: 0; margin-top: 2px; font-weight: 700; }
+.acts li.star::before { content: "★"; color: #1D9E75; font-size: 10px; }
+.acts li.warn { color: #A32D2D; }
+.acts li.warn::before { content: "!"; color: #A32D2D; font-weight: 900; }
+
+.sec-row td { background: #F5F3EE; padding: 7px 18px; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; color: #B4B2A9; text-transform: uppercase; border-top: 1px solid #EBE8E1; border-bottom: 1px solid #EBE8E1; }
+.warn-row td { background: #FFF8F8; }
+
+/* Legend chips */
+.chips { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 14px; font-size: 11px; color: #888780; }
+.chip { display: flex; align-items: center; gap: 5px; }
+.chip-dot { width: 10px; height: 10px; border-radius: 3px; }
+
+/* Footer */
+.footer { text-align: center; margin-top: 52px; font-size: 12px; color: #D3D1C7; }
+
+/* Print */
+@media print {
+  body { background: white; }
+  .page { padding: 20px; max-width: 100%; }
+  #map { height: 340px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .sum-card, .table-wrap { box-shadow: none; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="flag">🇳🇴</div>
+    <div class="eyebrow">Road Trip</div>
+    <div class="title">Noruega</div>
+    <div class="subtitle">13 — 23 de julio · 2026</div>
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-dot"></div>
+      <div class="divider-line"></div>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary">
+    <div class="sum-card"><div class="sum-num">4</div><div class="sum-label">Destinos</div></div>
+    <div class="sum-card"><div class="sum-num">10</div><div class="sum-label">Noches</div></div>
+    <div class="sum-card"><div class="sum-num">~700</div><div class="sum-label">km en coche</div></div>
+    <div class="sum-card"><div class="sum-num">11</div><div class="sum-label">Días</div></div>
+  </div>
+
+  <!-- Map -->
+  <div class="section-label">Ruta</div>
+  <div id="map"></div>
+  <div class="map-legend">
+    <div class="leg-item">
+      <svg width="28" height="4"><line x1="0" y1="2" x2="28" y2="2" stroke="#1D9E75" stroke-width="3.5" stroke-linecap="round"/></svg>
+      <span>Ruta confirmada</span>
+    </div>
+    <div class="leg-item">
+      <svg width="28" height="4"><line x1="0" y1="2" x2="28" y2="2" stroke="#1D9E75" stroke-width="2" stroke-dasharray="5,4" stroke-linecap="round"/></svg>
+      <span>Excursión del día</span>
+    </div>
+    <div class="leg-item">
+      <svg width="28" height="4"><line x1="0" y1="2" x2="28" y2="2" stroke="#7F77DD" stroke-width="2.5" stroke-dasharray="8,5" stroke-linecap="round"/></svg>
+      <span>Tramo de regreso a Oslo</span>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="section-label-table">Itinerario día a día</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:84px;">Fecha</th>
+          <th style="width:168px;">Alojamiento</th>
+          <th style="width:140px;">Traslado</th>
+          <th>Actividades</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr class="sec-row"><td colspan="4">Oslo &nbsp;·&nbsp; 2 noches</td></tr>
+        <tr>
+          <td><div class="date-d">13 jul</div><div class="date-dow">Domingo</div></td>
+          <td><div class="place">Oslo</div><span class="badge b-pending">Por reservar</span></td>
+          <td><span class="no-tr">—</span></td>
+          <td><ul class="acts">
+            <li>Llegada &amp; primeras impresiones</li>
+            <li>Aker Brygge · Fortaleza Akershus</li>
+            <li>Karl Johans Gate</li>
+          </ul></td>
+        </tr>
+        <tr>
+          <td><div class="date-d">14 jul</div><div class="date-dow">Lunes</div></td>
+          <td><div class="place">Oslo</div><span class="badge b-pending">Por reservar</span></td>
+          <td><span class="no-tr">—</span></td>
+          <td><ul class="acts">
+            <li>Vigeland Sculpture Park</li>
+            <li>Museo Viking (Bygdøy)</li>
+            <li>Holmenkollen · Grünerløkka</li>
+          </ul></td>
+        </tr>
+
+        <tr class="sec-row"><td colspan="4">Loen &nbsp;·&nbsp; 2 noches</td></tr>
+        <tr>
+          <td><div class="date-d">15 jul</div><div class="date-dow">Martes</div></td>
+          <td><div class="place">Loen</div><div class="hotel-sub">Hotel Alexandra o similar</div><span class="badge b-pending">Por reservar</span></td>
+          <td><div class="tr-time">~5–6 h</div><div class="tr-route">Oslo → Loen</div><div class="tr-route">parada Flåm · Stalheimskleiva</div></td>
+          <td><ul class="acts">
+            <li>Parada en Flåm y mirador Stalheimskleiva</li>
+            <li>Ferry cruzando el Sognefjord</li>
+            <li>Lago Lovatnet al llegar</li>
+          </ul></td>
+        </tr>
+        <tr>
+          <td><div class="date-d">16 jul</div><div class="date-dow">Miércoles</div></td>
+          <td><div class="place">Loen</div><div class="hotel-sub">Hotel Alexandra o similar</div><span class="badge b-pending">Por reservar</span></td>
+          <td><span class="no-tr">—</span></td>
+          <td><ul class="acts">
+            <li class="star">Glaciar Briksdalsbreen (caminata ~2 h)</li>
+            <li class="star">Loen Skylift + vía ferrata</li>
+            <li>Kayak en lago Lovatnet</li>
+          </ul></td>
+        </tr>
+
+        <tr class="sec-row"><td colspan="4">Stryn &nbsp;·&nbsp; 2 noches &nbsp;·&nbsp; Airbnb confirmado</td></tr>
+        <tr>
+          <td><div class="date-d">17 jul</div><div class="date-dow">Jueves</div></td>
+          <td><div class="place">Stryn</div><div class="hotel-sub">Airbnb · check-in</div><span class="badge b-confirmed">✓ Confirmado</span></td>
+          <td><div class="tr-time">~15 min</div><div class="tr-route">Loen → Stryn</div></td>
+          <td><ul class="acts">
+            <li>Check-in · Pueblo de Stryn · Nordfjord</li>
+          </ul></td>
+        </tr>
+        <tr>
+          <td><div class="date-d">18 jul</div><div class="date-dow">Viernes</div></td>
+          <td><div class="place">Stryn</div><div class="hotel-sub">Airbnb · check-out 19</div><span class="badge b-confirmed">✓ Confirmado</span></td>
+          <td><div class="tr-time">~1.5 h ida</div><div class="tr-route">Excursión a Geiranger</div></td>
+          <td><ul class="acts">
+            <li class="star">Mirador Ørnesvingen · cascadas Syv Søstre</li>
+            <li class="star">Crucero Geirangerfjord (Patrimonio UNESCO)</li>
+          </ul></td>
+        </tr>
+
+        <tr class="sec-row"><td colspan="4">Ålesund &nbsp;·&nbsp; 3 noches</td></tr>
+        <tr>
+          <td><div class="date-d">19 jul</div><div class="date-dow">Sábado</div></td>
+          <td><div class="place">Ålesund</div><span class="badge b-pending">Por reservar</span></td>
+          <td><div class="tr-time">~2.5–3 h</div><div class="tr-route">Stryn → Ålesund</div></td>
+          <td><ul class="acts">
+            <li class="star">Monte Aksla (vista panorámica de fiordos e islas)</li>
+            <li>Centro Art Nouveau · Canal Brosundet</li>
+          </ul></td>
+        </tr>
+        <tr>
+          <td><div class="date-d">20 jul</div><div class="date-dow">Domingo</div></td>
+          <td><div class="place">Ålesund</div><span class="badge b-pending">Por reservar</span></td>
+          <td><div class="tr-time">~1.5 h ida</div><div class="tr-route">Day trip → Valldal</div></td>
+          <td><ul class="acts">
+            <li class="star">Cascada Gudbrandsjuvet (pasarela de cristal)</li>
+            <li>Campos de fresas de Valldal · ferry Geiranger</li>
+          </ul></td>
+        </tr>
+        <tr>
+          <td><div class="date-d">21 jul</div><div class="date-dow">Lunes</div></td>
+          <td><div class="place">Ålesund</div><span class="badge b-pending">Por reservar</span></td>
+          <td><span class="no-tr">—</span></td>
+          <td><ul class="acts">
+            <li class="star">Atlanterhavsveien (carretera del Océano Atlántico)</li>
+            <li class="star">Hjørundfjord · kayak en fiordo</li>
+          </ul></td>
+        </tr>
+
+        <tr class="sec-row"><td colspan="4">Lom / Jotunheimen &nbsp;·&nbsp; 1 noche</td></tr>
+        <tr>
+          <td><div class="date-d">22 jul</div><div class="date-dow">Martes</div></td>
+          <td><div class="place">Lom / Jotunheimen</div><span class="badge b-pending">Por reservar</span></td>
+          <td><div class="tr-time">~4 h</div><div class="tr-route">Ålesund → Trollstigen → Lom</div></td>
+          <td><ul class="acts">
+            <li class="star">Trollstigen en ruta (11 curvas · parada ~1 h)</li>
+            <li>Stavkirke medieval de Lom</li>
+            <li>Tarde: lago Gjende o descanso</li>
+          </ul></td>
+        </tr>
+        <tr class="warn-row">
+          <td><div class="date-d">23 jul</div><div class="date-dow">Miércoles</div></td>
+          <td><div class="place">Oslo</div><span class="badge b-warning">⚠ Día largo</span></td>
+          <td><div class="tr-time">~5 h</div><div class="tr-route">Lom → Oslo</div><div class="tr-route">vía Lillehammer</div></td>
+          <td><ul class="acts">
+            <li class="star">Besseggen Ridge — salir 6–7am (~6h caminata)</li>
+            <li>Drive a Oslo por la tarde (~5h)</li>
+            <li class="warn">Día exigente — salir temprano es clave</li>
+          </ul></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <div class="chips">
+    <div class="chip"><div class="chip-dot" style="background:#D7F5E9; border:1px solid #1D9E75;"></div><span>Confirmado</span></div>
+    <div class="chip"><div class="chip-dot" style="background:#FEF3E2; border:1px solid #EF9F27;"></div><span>Por reservar</span></div>
+    <div class="chip" style="color:#5F5E5A;">★ Actividad destacada</div>
+  </div>
+
+  <div class="footer">Noruega · Julio 2026 &nbsp;·&nbsp; Generado con Claude</div>
+</div>
+
+<script>
+(function() {
+  var map = L.map('map', { zoomControl: true, scrollWheelZoom: false }).setView([61.6, 8.5], 6);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: 18
+  }).addTo(map);
+
+  function dot(color, size, border) {
+    size = size || 13;
+    return L.divIcon({
+      className: '',
+      html: '<div style="width:' + size + 'px;height:' + size + 'px;border-radius:50%;background:' + color + ';border:2.5px solid ' + (border||'white') + ';box-shadow:0 1px 6px rgba(0,0,0,0.22);"></div>',
+      iconSize: [size,size], iconAnchor: [size/2,size/2], popupAnchor: [0,-(size/2+6)]
+    });
+  }
+
+  function label(text, dx, dy) {
+    dx = dx || 10; dy = dy || -6;
+    return L.divIcon({
+      className: '',
+      html: '<div style="font-size:11.5px;font-weight:700;color:#1A1A18;white-space:nowrap;margin-left:' + dx + 'px;margin-top:' + dy + 'px;text-shadow:1px 1px 0 white,-1px -1px 0 white,1px -1px 0 white,-1px 1px 0 white,0 1px 0 white,0 -1px 0 white,1px 0 0 white,-1px 0 0 white;">' + text + '</div>',
+      iconSize: [0,0]
+    });
+  }
+
+  var stops = [
+    { ll:[59.91,10.75], name:'Oslo',             info:'13–15 jul &amp; llegada 23 jul', color:'#1D9E75', size:16 },
+    { ll:[61.87,6.85],  name:'Loen',             info:'15–17 jul · Hotel Alexandra',   color:'#1D9E75', size:13 },
+    { ll:[61.90,6.72],  name:'Stryn',            info:'17–19 jul · Airbnb ✓',          color:'#1D9E75', size:13 },
+    { ll:[62.10,7.21],  name:'Geiranger',        info:'Excursión día 18',              color:'#9FE1CB', size:10, border:'#1D9E75' },
+    { ll:[62.47,6.15],  name:'Ålesund',          info:'19–22 jul',                     color:'#1D9E75', size:16 },
+    { ll:[62.26,7.15],  name:'Valldal',          info:'Day trip día 20',               color:'#9FE1CB', size:10, border:'#1D9E75' },
+    { ll:[62.46,7.67],  name:'Trollstigen',      info:'Parada en ruta 22 jul',         color:'#AFA9EC', size:10, border:'#534AB7' },
+    { ll:[61.84,8.57],  name:'Lom / Jotunheimen',info:'22–23 jul',                    color:'#7F77DD', size:14 },
+    { ll:[61.49,8.69],  name:'Gjende / Besseggen',info:'Caminata día 23',             color:'#AFA9EC', size:10, border:'#534AB7' },
+    { ll:[61.12,10.46], name:'Lillehammer',      info:'Parada opcional en ruta',       color:'#AFA9EC', size:10, border:'#534AB7' },
+  ];
+
+  stops.forEach(function(s) {
+    L.marker(s.ll, { icon: dot(s.color, s.size, s.border) }).addTo(map)
+      .bindPopup('<div style="font-family:-apple-system,sans-serif;min-width:160px;"><strong style="font-size:14px;">' + s.name + '</strong><br><span style="font-size:12px;color:#888;">' + s.info + '</span></div>');
+  });
+
+  // Labels for main stops
+  [ [59.91,10.75,'Oslo',10,-7],
+    [61.87,6.85,'Loen',10,-7],
+    [61.90,6.72,'Stryn',-52,-7],
+    [62.47,6.15,'Ålesund',10,-7],
+    [61.84,8.57,'Lom / Jotunheimen',10,-7]
+  ].forEach(function(l) {
+    L.marker([l[0],l[1]], { icon: label(l[2],l[3],l[4]), interactive:false }).addTo(map);
+  });
+
+  // ── Confirmed: Oslo → Loen → Stryn → Ålesund ──
+  L.polyline([
+    [59.91,10.75],
+    [60.5,9.2],
+    [60.86,7.12],
+    [61.2,7.0],
+    [61.87,6.85],
+    [61.90,6.72],
+    [62.15,6.4],
+    [62.47,6.15]
+  ], { color:'#1D9E75', weight:3.5, opacity:0.9 }).addTo(map);
+
+  // ── Day trip: Stryn → Geiranger ──
+  L.polyline([[61.90,6.72],[62.10,7.21]], { color:'#1D9E75', weight:2, dashArray:'6,5', opacity:0.8 }).addTo(map);
+
+  // ── Day trip: Ålesund → Valldal ──
+  L.polyline([[62.47,6.15],[62.26,7.15]], { color:'#1D9E75', weight:2, dashArray:'6,5', opacity:0.8 }).addTo(map);
+
+  // ── Return: Ålesund → Trollstigen → Lom → Gjende → Lillehammer → Oslo ──
+  L.polyline([
+    [62.47,6.15],
+    [62.46,7.67],
+    [61.84,8.57],
+    [61.49,8.69],
+    [61.12,10.46],
+    [59.91,10.75]
+  ], { color:'#7F77DD', weight:2.5, dashArray:'9,6', opacity:0.8 }).addTo(map);
+
+})();
+</script>
+</body>
+</html>
