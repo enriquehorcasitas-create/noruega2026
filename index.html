@@ -40,6 +40,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Ne
 .table-wrap { background: white; border-radius: 16px; border: 1px solid #E0DDD6; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
 table { width: 100%; border-collapse: collapse; }
 thead th { background: #FAFAF8; padding: 13px 18px; text-align: left; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; color: #B4B2A9; text-transform: uppercase; border-bottom: 1px solid #F0EDE6; }
+.res-link { display: inline-block; margin-top: 6px; font-size: 11px; font-weight: 600; color: #1D9E75; text-decoration: none; border: 1px solid #1D9E75; border-radius: 20px; padding: 2px 10px; white-space: nowrap; }
+.res-link:hover { background: #1D9E75; color: white; }
+.res-none { color: #D3D1C7; font-size: 12px; }
 tbody tr { border-bottom: 1px solid #F5F3EE; vertical-align: top; }
 tbody tr:last-child { border-bottom: none; }
 tbody tr:hover { background: #FDFCFA; }
@@ -135,14 +138,15 @@ td { padding: 14px 18px; }
       <thead>
         <tr>
           <th style="width:84px;">Fecha</th>
-          <th style="width:168px;">Alojamiento</th>
-          <th style="width:140px;">Traslado</th>
+          <th style="width:155px;">Alojamiento</th>
+          <th style="width:130px;">Traslado</th>
           <th>Actividades</th>
+          <th style="width:90px;">Reserva</th>
         </tr>
       </thead>
       <tbody>
 
-        <tr class="sec-row"><td colspan="4">Oslo &nbsp;·&nbsp; 2 noches</td></tr>
+        <tr class="sec-row"><td colspan="5">Oslo &nbsp;·&nbsp; 2 noches</td></tr>
         <tr>
           <td><div class="date-d">13 jul</div><div class="date-dow">Domingo</div></td>
           <td><div class="place">Oslo</div><span class="badge b-pending">Por reservar</span></td>
@@ -152,6 +156,7 @@ td { padding: 14px 18px; }
             <li>Aker Brygge · Fortaleza Akershus</li>
             <li>Karl Johans Gate</li>
           </ul></td>
+          <td><span class="res-none">—</span></td>
         </tr>
         <tr>
           <td><div class="date-d">14 jul</div><div class="date-dow">Lunes</div></td>
@@ -162,21 +167,23 @@ td { padding: 14px 18px; }
             <li>Museo Viking (Bygdøy)</li>
             <li>Holmenkollen · Grünerløkka</li>
           </ul></td>
+          <td><span class="res-none">—</span></td>
         </tr>
 
-        <tr class="sec-row"><td colspan="4">Stalheim &nbsp;·&nbsp; 1 noche</td></tr>
+        <tr class="sec-row"><td colspan="5">Stalheim &nbsp;·&nbsp; 1 noche</td></tr>
         <tr>
           <td><div class="date-d">15 jul</div><div class="date-dow">Martes</div></td>
-          <td><div class="place">Stalheim</div><div class="hotel-sub">Stalheim Hotel</div><span class="badge b-pending">Por reservar</span></td>
+          <td><div class="place">Stalheim</div><div class="hotel-sub">Stalheim Hotel</div><span class="badge b-confirmed">✓ Confirmado</span></td>
           <td><div class="tr-time">~4.5 h</div><div class="tr-route">Oslo → Stalheim</div><div class="tr-route">parada en Flåm</div></td>
           <td><ul class="acts">
             <li>Parada en Flåm · Flåmsbana (vista)</li>
             <li class="star">Mirador Stalheimskleiva · vistas del Nærøyfjord</li>
             <li>Check-in Stalheim Hotel</li>
           </ul></td>
+          <td><a class="res-link" href="https://expe.onelink.me/hnLd/125uxd9i" target="_blank">Ver reserva</a></td>
         </tr>
 
-        <tr class="sec-row"><td colspan="4">Loen &nbsp;·&nbsp; 1 noche</td></tr>
+        <tr class="sec-row"><td colspan="5">Loen &nbsp;·&nbsp; 1 noche</td></tr>
         <tr>
           <td><div class="date-d">16 jul</div><div class="date-dow">Miércoles</div></td>
           <td><div class="place">Loen</div><div class="hotel-sub">Hotel Alexandra o similar</div><span class="badge b-pending">Por reservar</span></td>
@@ -186,9 +193,10 @@ td { padding: 14px 18px; }
             <li>Ferry cruzando el Sognefjord</li>
             <li class="star">Loen Skylift + lago Lovatnet al llegar</li>
           </ul></td>
+          <td><span class="res-none">—</span></td>
         </tr>
 
-        <tr class="sec-row"><td colspan="4">Stryn &nbsp;·&nbsp; 2 noches &nbsp;·&nbsp; Airbnb confirmado</td></tr>
+        <tr class="sec-row"><td colspan="5">Stryn &nbsp;·&nbsp; 2 noches &nbsp;·&nbsp; Airbnb confirmado</td></tr>
         <tr>
           <td><div class="date-d">17 jul</div><div class="date-dow">Jueves</div></td>
           <td><div class="place">Stryn</div><div class="hotel-sub">Airbnb · check-in</div><span class="badge b-confirmed">✓ Confirmado</span></td>
@@ -197,6 +205,7 @@ td { padding: 14px 18px; }
             <li>Check-in · Pueblo de Stryn · Nordfjord</li>
             <li>Senderismo Briksdal o kayak Oldevatnet</li>
           </ul></td>
+          <td><a class="res-link" href="https://www.airbnb.es/rooms/1076777028373934418?viralityEntryPoint=154&s=76&adults=1&guests=1" target="_blank">Ver reserva</a></td>
         </tr>
         <tr>
           <td><div class="date-d">18 jul</div><div class="date-dow">Viernes</div></td>
@@ -207,9 +216,10 @@ td { padding: 14px 18px; }
             <li>Cascadas Syv Søstre · Friaren</li>
             <li>Kayak o SUP en el fiordo</li>
           </ul></td>
+          <td><span class="res-none">—</span></td>
         </tr>
 
-        <tr class="sec-row"><td colspan="4">Geiranger &nbsp;·&nbsp; 2 noches</td></tr>
+        <tr class="sec-row"><td colspan="5">Geiranger &nbsp;·&nbsp; 2 noches</td></tr>
         <tr>
           <td><div class="date-d">19 jul</div><div class="date-dow">Sábado</div></td>
           <td><div class="place">Geiranger</div><span class="badge b-pending">Por reservar</span></td>
@@ -219,6 +229,7 @@ td { padding: 14px 18px; }
             <li>Crucero Geirangerfjord · cascadas</li>
             <li>Pueblo de Geiranger · atardecer</li>
           </ul></td>
+          <td><span class="res-none">—</span></td>
         </tr>
         <tr>
           <td><div class="date-d">20 jul</div><div class="date-dow">Domingo</div></td>
@@ -229,9 +240,10 @@ td { padding: 14px 18px; }
             <li class="star">Caminata a Storseterfossen (cascada pasante)</li>
             <li>Mirador Flydalsjuvet al atardecer</li>
           </ul></td>
+          <td><span class="res-none">—</span></td>
         </tr>
 
-        <tr class="sec-row"><td colspan="4">Ålesund &nbsp;·&nbsp; 2 noches</td></tr>
+        <tr class="sec-row"><td colspan="5">Ålesund &nbsp;·&nbsp; 2 noches</td></tr>
         <tr>
           <td><div class="date-d">21 jul</div><div class="date-dow">Lunes</div></td>
           <td><div class="place">Ålesund</div><span class="badge b-pending">Por reservar</span></td>
@@ -241,6 +253,7 @@ td { padding: 14px 18px; }
             <li>Centro Art Nouveau · Canal Brosundet</li>
             <li>Cena en el puerto</li>
           </ul></td>
+          <td><span class="res-none">—</span></td>
         </tr>
         <tr>
           <td><div class="date-d">22 jul</div><div class="date-dow">Martes</div></td>
@@ -251,9 +264,10 @@ td { padding: 14px 18px; }
             <li>Cascada Gudbrandsjuvet · Valldal</li>
             <li class="star">Atlanterhavsveien (carretera del Océano Atlántico)</li>
           </ul></td>
+          <td><span class="res-none">—</span></td>
         </tr>
 
-        <tr class="sec-row"><td colspan="4">Regreso a Oslo</td></tr>
+        <tr class="sec-row"><td colspan="5">Regreso a Oslo</td></tr>
         <tr>
           <td><div class="date-d">23 jul</div><div class="date-dow">Miércoles</div></td>
           <td><div class="place">Oslo</div><div class="hotel-sub">Llegada en la tarde</div></td>
@@ -263,6 +277,7 @@ td { padding: 14px 18px; }
             <li>Vuelo Ålesund → Oslo (tarde libre en Oslo)</li>
             <li>Cena de despedida en Oslo</li>
           </ul></td>
+          <td><span class="res-none">—</span></td>
         </tr>
 
       </tbody>
